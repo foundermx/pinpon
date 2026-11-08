@@ -1,0 +1,22 @@
+---
+// Estrellita tipo sello del menú impreso. tone: red | line | lime
+const { tone = 'line', tilt = -6, points = 18 } = Astro.props;
+const pts = Array.from({ length: points * 2 }, (_, i) => {
+  const a = (Math.PI * i) / points, r = i % 2 ? 41 : 50;
+  return `${(50 + r * Math.cos(a)).toFixed(2)},${(50 + r * Math.sin(a)).toFixed(2)}`;
+}).join(' ');
+---
+<div class:list={['burst', tone]} style={`--tilt:${tilt}deg`}>
+  <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polygon points={pts} vector-effect="non-scaling-stroke" /></svg>
+  <p><slot /></p>
+</div>
+
+<style>
+  .burst { position: relative; display: inline-grid; place-items: center; padding: 1.5em 1.9em; transform: rotate(var(--tilt)); text-align: center; }
+  svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  polygon { fill: var(--paper); stroke: var(--ink); stroke-width: 2.5px; stroke-linejoin: round; }
+  p { position: relative; margin: 0; font: 800 .82em/1.05 var(--display); font-stretch: 112%; text-transform: uppercase; letter-spacing: .02em; }
+  .red polygon { fill: var(--red); stroke: none; }
+  .red p { color: #fff; font: 900 clamp(1.3rem, 5.6vw, 2rem)/.95 var(--display); font-stretch: 108%; }
+  .lime polygon { fill: var(--lime); }
+</style>
